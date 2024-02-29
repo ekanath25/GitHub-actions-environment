@@ -4,9 +4,16 @@ on:
     branches:
       - main
       - dev
+env: 
+  MONGODB_DB_NAME: test-gituhb-actions
 jobs:
   test:
     environment: testing
+    env:
+      MONGODB_CLUSTER_ADDRESS: cluster0.vqmeeak.mongodb.net
+      MONGODB_USERNAME: ekanath
+      MONGODB_PASSWORD: BsVYVTdSFl7M0R11
+      PORT: 3000
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -23,11 +30,14 @@ jobs:
       - name: Run tests
         run: npm test
       - name: Output information
-        run: echo "..."
+        run: |
+          echo "MONGODB_USERNAME: $MONGODB_USERNAME"
+          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
   deploy:
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Output information
         run: |        
-          echo "..."
+          echo "MONGODB_USERNAME: $MONGODB_USERNAME"
+          echo "MONGODB_DB_NAME: $MONGODB_DB_NAME"
