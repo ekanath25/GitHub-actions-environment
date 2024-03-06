@@ -9,11 +9,12 @@ env:
 jobs:
   test:
     environment: testing
-    # container:
-    #   image: node:16
+    container:
+      image: node:16
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb
-      MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017          #mongodb
+      MONGODB_CLUSTER_ADDRESS: mongodb #service container name
+      # MONGODB_CLUSTER_ADDRESS: 127.0.0.1:27017         if it run in runner
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 3000
@@ -23,8 +24,8 @@ jobs:
         env:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: example
-        ports:
-          - 27017:27017
+        # ports: if it run in runner
+        #   - 27017:27017
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
