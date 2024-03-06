@@ -19,7 +19,7 @@ jobs:
       MONGODB_PASSWORD: example
       PORT: 3000
     services:
-      mongodb:
+      mongodb: #service container name
         image: mongo
         env:
           MONGO_INITDB_ROOT_USERNAME: root
