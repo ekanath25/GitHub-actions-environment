@@ -12,7 +12,8 @@ jobs:
     container:
       image: node:16
     env:
-      MONGODB_CLUSTER_ADDRESS: mongodb
+      MONGODB_CONNECTION_PROTOCOL: mongodb
+      MONGODB_CLUSTER_ADDRESS: mongo
       MONGODB_USERNAME: root
       MONGODB_PASSWORD: example
       PORT: 3000
