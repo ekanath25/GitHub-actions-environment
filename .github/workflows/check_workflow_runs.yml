@@ -9,7 +9,7 @@ jobs:
         steps:
             - name: Get Previous Run Status
               id: get_previous_status
-              uses: actions/github-script@v4
+              uses: actions/github-script@v6
               with:
                 github-token: ${{ secrets.GITHUB_TOKEN }}
                 script: |
