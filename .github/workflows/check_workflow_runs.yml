@@ -18,11 +18,11 @@ jobs:
           
           echo "Response: $response"
           runs=$(echo "$response" | jq '.total_count')
-          echo "runs=$runs" >> $GITHUB_ENV
+          echo "runs=$runs" >> $GITHUB_OUTPUT
       
       - name: Check if there are in-progress runs
         run: |
-          if [ "$runs" -gt 0 ]; then
+          if [ "${{ (steps.get_workflow_runs.outputs.runs) }}" -gt 0 ]; then
             echo "There are previous runs in progress."
             exit 1
           else
