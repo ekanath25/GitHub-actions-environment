@@ -1,0 +1,31 @@
+name: "This workflows validates the runbooks and scripts in the repository"
+on: 
+    workflow_dispatch:
+
+jobs:
+    check_workflow_runs:
+        name: Check if workflows run
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Previous Run Status
+              id: get_previous_status
+              uses: actions/github-script@v4
+              with:
+                github-token: ${{ secrets.GITHUB_TOKEN }}
+                script: |
+                  const runs = await github.actions.listWorkflowRuns({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    workflow_id: context.workflow,
+                    branch: context.ref.replace('refs/heads/', ''),
+                    status: 'in_progress'
+                    });
+                    
+                    if (runs.data.total_count > 0) {
+                    console.log(`There are ${runs.data.total_count} in-progress run(s).`);
+                    core.setFailed('Previous workflow run is still in progress.');
+                    } else {
+                    console.log('No in-progress runs.');
+                    }
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
