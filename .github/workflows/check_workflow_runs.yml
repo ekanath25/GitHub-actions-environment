@@ -18,6 +18,7 @@ jobs:
           
                   echo "Response: $response"
                   echo "::set-output name=runs::$response"
+                  echo "runs=$response" >> $GITHUB_OUTPUT
               - name: Check if there are in-progress runs
                 run: |
                   in_progress=$(echo "${{ steps.get_workflow_runs.outputs.runs }}" | jq '.total_count')
