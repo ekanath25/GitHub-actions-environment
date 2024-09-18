@@ -18,10 +18,10 @@ jobs:
           
                   echo "Response: $response"
                   #echo "::set-output name=runs::$response"
-                  echo "runs=${{toJSON($response)}}" >> $GITHUB_OUTPUT
+                  echo "runs=$response" >> $GITHUB_OUTPUT
               - name: Check if there are in-progress runs
                 run: |
-                  in_progress=$(echo "${{ steps.get_workflow_runs.outputs.runs }}" | jq '.total_count')
+                  in_progress=$(echo "${{ toJSON(steps.get_workflow_runs.outputs.runs) }}" | jq '.total_count')
                   
                   if [ "$in_progress" -gt 0 ]; then
                     echo "There are previous runs in progress."
