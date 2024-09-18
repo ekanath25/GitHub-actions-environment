@@ -29,6 +29,8 @@ jobs:
             echo "No in-progress runs."
           fi
           
+      - uses: actions/checkout@v4
+      
       - name: Run the test powershell script
         shell: pwsh
         run: |
