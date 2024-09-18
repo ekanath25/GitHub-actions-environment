@@ -32,4 +32,4 @@ jobs:
       - name: Run the test powershell script
         shell: pwsh
         run: |
-            .\Scripts\test.ps1
+          .\Scripts\test.ps1
