@@ -1,31 +1,32 @@
 name: "Workflow-history"
 on: 
-    workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
-    check_workflow_runs:
-        name: Check if workflows run
-        runs-on: ubuntu-latest
-        steps:
-              - name: Get previous workflow runs
-                id: get_workflow_runs
-                run: |
-                  response=$(curl -s \
-                    -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-                    -H "Accept: application/vnd.github.v3+json" \
-                    -H "X-GitHub-Api-Version: 2022-11-28" \
-                    "https://api.github.com/repos/${{ github.repository }}/actions/workflows/check_workflow_runs.yml/runs?branch=main&status=in_progress")
+  check_workflow_runs:
+    name: Check if workflows run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get previous workflow runs
+        id: get_workflow_runs
+        run: |
+          response=$(curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/check_workflow_runs.yml/runs?branch=main&status=in_progress")
           
-                  echo "Response: $response"
-                  #echo "::set-output name=runs::$response"
-                  echo "runs='$response'" >> $GITHUB_OUTPUT
-              - name: Check if there are in-progress runs
-                run: |
-                  in_progress=$(echo "{{ toJSON(steps.get_workflow_runs.outputs.runs) }}" | jq '.total_count')
-                  
-                  if [ "$in_progress" -gt 0 ]; then
-                    echo "There are previous runs in progress."
-                    exit 1
-                  else
-                    echo "No in-progress runs."
-                  fi
+          echo "Response: $response"
+          runs=$(echo "$response" | jq '.total_count')
+          echo "runs=$runs" >> $GITHUB_ENV
+      
+      - name: Check if there are in-progress runs
+        run: |
+          if [ "$runs" -gt 0 ]; then
+            echo "There are previous runs in progress."
+            exit 1
+          else
+            echo "No in-progress runs."
+          fi
+        env:
+          runs: ${{ env.runs }}
