@@ -1,4 +1,4 @@
-name: "This workflows validates the runbooks and scripts in the repository"
+name: "Workflow-history"
 on: 
     workflow_dispatch:
 
