@@ -28,5 +28,8 @@ jobs:
           else
             echo "No in-progress runs."
           fi
-        env:
-          runs: ${{ env.runs }}
+          
+      - name: Run the test powershell script
+        shell: pwsh
+        run: |
+            .\Scripts\test.ps1
